@@ -139,7 +139,7 @@ void gauss_seidel(vector<vector<float>> &a, vector<float> &b){
 
     if (diagonally_dominant(a)){   
         vector<float> prev_x(n, 0);  // Previous values of x
-        int iteration{0};
+        //int iteration{0};
         do {
             prev_x = x;  // Update prev_x to the current values of x
 
@@ -153,11 +153,11 @@ void gauss_seidel(vector<vector<float>> &a, vector<float> &b){
                 x[j] = sum / a[j][j];
             }
 
-            cout << "Iteration " << iteration++ << ": ";
-            for (int i = 0; i < n; i++){
-                cout << x[i] << " ";
-            }
-            cout << "\n";
+            // cout << "Iteration " << iteration++ << ": ";
+            // for (int i = 0; i < n; i++){
+            //     cout << x[i] << " ";
+            // }
+            // cout << "\n";
 
         } while (error(x, prev_x) > 0.000001);
 
