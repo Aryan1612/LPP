@@ -111,7 +111,7 @@ void make_dominant(vector<vector<float>> &a, vector<float> &b){
     }
     set<int> st{indices.begin(), indices.end()};
     if ((int)st.size() < (int)indices.size())
-        cout << "not diagonlly dominant in any case, hence no solution for this case\n";
+        cout << "not diagonlly dominant in any case, gauss-seidel not applicable\n";
     else{
         vector< vector<float> > temp{a};
         vector<float> c{b};
@@ -139,6 +139,7 @@ void gauss_seidel(vector<vector<float>> &a, vector<float> &b){
 
     if (diagonally_dominant(a)){   
         vector<float> prev_x(n, 0);  // Previous values of x
+        int iteration{0};
         do {
             prev_x = x;  // Update prev_x to the current values of x
 
@@ -152,11 +153,11 @@ void gauss_seidel(vector<vector<float>> &a, vector<float> &b){
                 x[j] = sum / a[j][j];
             }
 
-            // cout << "Iteration " << iteration++ << ": ";
-            // for (int i = 0; i < n; i++){
-            //     cout << x[i] << " ";
-            // }
-            //cout << "\n";
+            cout << "Iteration " << iteration++ << ": ";
+            for (int i = 0; i < n; i++){
+                cout << x[i] << " ";
+            }
+            cout << "\n";
 
         } while (error(x, prev_x) > 0.000001);
 
