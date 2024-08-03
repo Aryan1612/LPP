@@ -137,12 +137,7 @@ void gauss_seidel(vector<vector<float>> &a, vector<float> &b){
     vector<float> x(n, 0);
     cout << "diagonally dominant (0 or 1) " << diagonally_dominant(a) << "\n\n";
 
-    if (diagonally_dominant(a)){
-        // Input vector b
-        for (int i = 0; i < n; i++){
-            cin >> b[i];
-        }
-
+    if (diagonally_dominant(a)){   
         vector<float> prev_x(n, 0);  // Previous values of x
         do {
             prev_x = x;  // Update prev_x to the current values of x
