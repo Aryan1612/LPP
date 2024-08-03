@@ -36,7 +36,7 @@ int main(){
                 arr[i].push_back(a[i][it]);
             }
         }
-        cout << "\nfor basic variables : ";
+        cout << fixed << setprecision(5) << "\nfor basic variables : ";
         for (auto it : combination){
             cout << "x_"<<it << " ";
         }
