@@ -36,7 +36,7 @@ int main(){
                 arr[i].push_back(a[i][it]);
             }
         }
-        cout << fixed << setprecision(5) << "\nfor basic variables : ";
+        cout << "\nfor basic variables : ";
         for (auto it : combination){
             cout << "x_"<<it << " ";
         }
@@ -135,7 +135,7 @@ void print(const vector<float> &x){
 void gauss_seidel(vector<vector<float>> &a, vector<float> &b){
     int n = a.size();
     vector<float> x(n, 0);
-    cout << "diagonally dominant (0 or 1) " << diagonally_dominant(a) << "\n\n";
+    cout << "diagonally dominant (0 or 1) " << diagonally_dominant(a) << "\n\n" << fixed << setprecision(5);
 
     if (diagonally_dominant(a)){   
         vector<float> prev_x(n, 0);  // Previous values of x
