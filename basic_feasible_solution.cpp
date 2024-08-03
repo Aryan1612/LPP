@@ -1,15 +1,15 @@
 //2nd August 2024 - Aryan Arora_22MA10077 - Basic Feasible Soultion
-
 #include <bits/stdc++.h>
 using namespace std;
 
+vector <vector <int> > getCombinations(vector<int> &arr, int r);
 float error(const vector<float> &x0, const vector<float> &x1);
 void print(const vector<float> &x);
 bool diagonally_dominant(const vector<vector<float>> &a);
 void make_dominant(vector<vector<float>> &a, vector<float> &b);
-vector <vector <int> > getCombinations(vector<int> &arr, int r);
-void combinationsUntil(const vector<int> &arr, vector<int> &current, int start, int r, vector<vector<int>> &combinations);
 void gauss_seidel(vector<vector<float>> &a, vector<float> &b);
+void combinationsUntil(const vector<int> &arr, vector<int> &current, int start, int r, vector<vector<int>> &combinations);
+
 
 int main(){
     int n, m;
@@ -67,7 +67,6 @@ void combinationsUntil(const vector<int> &arr, vector<int> &current, int start, 
         combinations.push_back(current);
         return;
     }
-
     for (int i = start; i < (int) arr.size(); i++){
         current.push_back(arr[i]);
         combinationsUntil(arr, current, i+1, r, combinations);
@@ -111,7 +110,7 @@ void make_dominant(vector<vector<float>> &a, vector<float> &b){
         }
     }
     set<int> st{indices.begin(), indices.end()};
-    if (st.size() != indices.size())
+    if ((int)st.size() < (int)indices.size())
         cout << "not diagonlly dominant in any case, hence no solution for this case\n";
     else{
         vector< vector<float> > temp{a};
@@ -190,6 +189,5 @@ void gauss_seidel(vector<vector<float>> &a, vector<float> &b){
         }
         if (flag2 == 1)
             cout << "non-degenerate solution\n";
-
     }
 }
