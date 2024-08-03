@@ -36,7 +36,7 @@ int main(){
                 arr[i].push_back(a[i][it]);
             }
         }
-        cout << "\nfor basic variables : ";
+        cout << fixed << setprecision(5) << "for basic variables : ";
         for (auto it : combination){
             cout << "x_"<<it << " ";
         }
@@ -135,7 +135,7 @@ void print(const vector<float> &x){
 void gauss_seidel(vector<vector<float>> &a, vector<float> &b){
     int n = a.size();
     vector<float> x(n, 0);
-    cout << "diagonally dominant (0 or 1) " << diagonally_dominant(a) << "\n\n" << fixed << setprecision(5);
+    cout << "diagonally dominant (0 or 1) " << diagonally_dominant(a) << "\n\n";
 
     if (diagonally_dominant(a)){   
         vector<float> prev_x(n, 0);  // Previous values of x
@@ -178,12 +178,12 @@ void gauss_seidel(vector<vector<float>> &a, vector<float> &b){
             cout << "basic feasible solution\t";
         for (int i = 0; i < n; i++){
             if (x[i] < 0.00001 && x[i] >= 0 ){
-                cout << "degenerate solution\n";
+                cout << "degenerate solution\n\n";
                 flag2 = -1;
                 break;
             }
         }
         if (flag2 == 1)
-            cout << "non-degenerate solution\n";
+            cout << "non-degenerate solution\n\n";
     }
 }
