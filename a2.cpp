@@ -77,6 +77,7 @@ int main() {
         // Solve using Gauss-Seidel method
         if (gauss_seidel(subMatrix, subRHS, solution)) {
             // Check if solution is basic feasible
+            print(solution);
             bool isFeasible = true;
             for (float val : solution) {
                 if (val < 0) {
@@ -233,7 +234,7 @@ bool gauss_seidel(vector<vector<float>> &a, vector<float> &b, vector<float> &sol
                 x[j] = sum / a[j][j];
             }
 
-        } while (error(x, prev_x) > 0.000001);
+        } while (abs(error(x, prev_x)) > 0.000001);
 
         solution = x;
         return true;
