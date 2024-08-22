@@ -10,7 +10,6 @@ private:
     vector<float> C; // Coefficient of the objective function
     vector<int> basicVars; // Indices of basic variables
     vector<float> D; // Delta values
-    int iterations;
 
 public:
     Simplex(vector<vector<float>> matrix, vector<float> b, vector<float> c, vector<int> unrestrictedVars) {
@@ -19,7 +18,6 @@ public:
         A = matrix;
         B = b;
         C = c;
-        iterations = 0;
 
         handleUnrestrictedVariables(unrestrictedVars); // Handle unrestricted variables
         expandMatrix(); // Expand the matrix to include slack variables
@@ -70,7 +68,6 @@ public:
         cout << "\n";
     }
 
-
     void printTableau() {
         cout << "Simplex Tableau:\n";
         cout << "----------------------------------------------------------------------------------------------------------------\n";
@@ -104,12 +101,21 @@ public:
         cout << "\n----------------------------------------------------------------------------------------------------------------\n";
     }
 
-
     void iterate() {
-            int enteringVar = findEnteringVariable();
+        // Only run one iteration
+        int enteringVar = findEnteringVariable();
+        if (enteringVar == -1) {
+            cout << "Optimal solution found!\n";
+        } else {
             int leavingVar = findLeavingVariable(enteringVar);
-            pivot(enteringVar, leavingVar);
-            printTableau();
+            if (leavingVar == -1) {
+                cout << "Unbounded solution!\n";
+            } else {
+                pivot(enteringVar, leavingVar);
+                printTableau();
+                cout << "Optimal solution found!\n";
+            }
+        }
         printFinalSolution();
     }
 
@@ -117,7 +123,7 @@ public:
         float minima {FLT_MAX};
         int min_ind{-1};
         for (int j = 0; j < cols; j++) {
-            if (D[j]<minima){
+            if (D[j] < minima) {
                 minima = D[j];
                 min_ind = j;
             }
@@ -178,7 +184,6 @@ public:
             optimalValue += C[basicVars[i]] * B[i];
         }
         cout << "Optimal Objective Value: " << optimalValue << "\n";
-        cout << "Number of Iterations: " << iterations << "\n";
     }
 };
 
