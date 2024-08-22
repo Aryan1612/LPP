@@ -106,31 +106,23 @@ public:
 
 
     void iterate() {
-        while (true) {
-            iterations++;
             int enteringVar = findEnteringVariable();
-            if (enteringVar == -1) {
-                cout << "Optimal solution found!\n";
-                break;
-            }
-
             int leavingVar = findLeavingVariable(enteringVar);
-            if (leavingVar == -1) {
-                cout << "Unbounded solution!\n";
-                break;
-            }
-
             pivot(enteringVar, leavingVar);
             printTableau();
-        }
         printFinalSolution();
     }
 
     int findEnteringVariable() {
+        float minima FLT_MAX;
+        int min_ind{-1};
         for (int j = 0; j < cols; j++) {
-            if (D[j] < 0) return j;
+            if (D[j]<minima){
+                minima = D[j];
+                min_ind = j;
+            }
         }
-        return -1; // No negative delta means optimal solution is found
+        return min_ind; 
     }
 
     int findLeavingVariable(int enteringVar) {
