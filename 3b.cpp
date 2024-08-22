@@ -1,3 +1,4 @@
+//aryan arora - 22MA10077 - surplus, slack and artifical variables
 #include <bits/stdc++.h>
 
 using namespace std;
