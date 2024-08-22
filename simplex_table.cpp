@@ -1,3 +1,4 @@
+//aryan arora - 22MA10077 - Simple Table done on 16th August 2024
 #include <bits/stdc++.h>
 
 using namespace std; 
