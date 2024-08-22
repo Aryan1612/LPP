@@ -114,7 +114,7 @@ public:
     }
 
     int findEnteringVariable() {
-        float minima FLT_MAX;
+        float minima {FLT_MAX};
         int min_ind{-1};
         for (int j = 0; j < cols; j++) {
             if (D[j]<minima){
