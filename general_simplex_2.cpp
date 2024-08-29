@@ -10,6 +10,8 @@ private:
     vector<float> C; // Coefficient of the objective function
     vector<int> basicVars; // Indices of basic variables
     vector<float> D; // Delta values
+    float minRatio = FLT_MAX;
+    float pivotElement = FLT_MAX;
 
 public:
     Simplex(vector<vector<float>> matrix, vector<float> b, vector<float> c, vector<int> unrestrictedVars) {
@@ -18,7 +20,7 @@ public:
         A = matrix;
         B = b;
         C = c;
-
+        make_rhs_positive(matrix, b);
         handleUnrestrictedVariables(unrestrictedVars); // Handle unrestricted variables
         expandMatrix(); // Expand the matrix to include slack variables
         for (int i = 0; i < rows; i++) {
@@ -26,6 +28,16 @@ public:
         }
     }
 
+    void make_rhs_positive(vector<vector<float>> &matrix, vector<float> &b){
+        for (int i = 0; i < (int)b.size(); i++){
+            if (b[i] < 0){
+                for (int j = 0; j < (int) matrix[i].size(); j++)
+                    matrix[i][j]*=-1;
+                b[i]*=-1;
+            }
+        }
+        return;
+    }
     void handleUnrestrictedVariables(const vector<int>& unrestrictedVars) {
         for (int index : unrestrictedVars) {
             // Add yj and zj
@@ -68,6 +80,29 @@ public:
         cout << "\n";
     }
 
+    void printbasicvars(){
+        cout << "Basic Variables : \t";
+        for (auto var : basicVars)
+            cout << "x" << var+1 << " ";
+        cout << "\n";
+        return;
+    }
+    void printnonbasicvars(){
+        cout << "Non Basic Variables : \t";
+        for (int i  = 0; i < cols; i++){
+            if (find(basicVars.begin(), basicVars.end(), i)==basicVars.end())
+                cout << "x" << i+1 << " ";
+        }
+        cout << "\n";
+        return;
+    }
+    void printDelta(){
+        cout << "\nDelta (∆j) values:\n"; 
+        for (int j = 0; j < cols; j++)
+            cout << "∆" << j + 1 << " = " << D[j] << " ";
+        cout << "\n";
+    }
+
     void printTableau() {
         cout << "Simplex Tableau:\n";
         cout << "----------------------------------------------------------------------------------------------------------------\n";
@@ -105,10 +140,14 @@ public:
         int iterations = 0;
         while (true) {
             iterations++;
+            cout << "iteration = " << iterations << "\n";
             calculateDelta();
+            
             int enteringVar = findEnteringVariable();
             if (enteringVar == -1) {
-                cout << "Optimal solution found!\n";
+                cout << "\n\nOptimal solution found!\n";
+                cout << "total iterations = " << iterations << "\n";
+                cout << "\nFinal Optimal Solution:\n";
                 break;
             }
 
@@ -118,10 +157,24 @@ public:
                 break;
             }
 
+            cout << "entering variable : x" << enteringVar+1 << "\n";
+            cout << "leaving variable : x" << basicVars[leavingVar]+1 << "\n";
             pivot(enteringVar, leavingVar);
+
+            cout << "\npivot element is " << pivotElement  << " at " << "(" << leavingVar+1 << ", " << enteringVar+1 << ")" <<"\n";
+            cout << "minRatio is : " << minRatio << "\n\n"; 
+
             printTableau();
+
+            printFinalSolution(0);
+
+            printbasicvars();
+
+            printnonbasicvars();
+
+            printDelta();
         }
-        printFinalSolution();
+        printFinalSolution(1);
     }
 
     int findEnteringVariable() {
@@ -130,7 +183,7 @@ public:
     }
 
     int findLeavingVariable(int enteringVar) {
-        float minRatio = FLT_MAX;
+        minRatio = FLT_MAX;
         int leavingVar = -1;
         for (int i = 0; i < rows; i++) {
             if (A[i][enteringVar] > 0) {
@@ -145,7 +198,8 @@ public:
     }
 
     void pivot(int enteringVar, int leavingVar) {
-        float pivotElement = A[leavingVar][enteringVar];
+        pivotElement = A[leavingVar][enteringVar];
+        //cout << "pivot element is " << pivotElement  << "at" << "(" << leavingVar+1 << ", " << enteringVar+1 << ")" <<"\n";
         for (int j = 0; j < cols; j++) {
             A[leavingVar][j] /= pivotElement;
         }
@@ -164,8 +218,11 @@ public:
         basicVars[leavingVar] = enteringVar;
     }
 
-    void printFinalSolution() {
-        cout << "\nFinal Optimal Solution:\n";
+    void printFinalSolution(bool optimality) {
+        if (optimality)
+            cout << "\nOptimal Solution : \n";
+        else
+            cout << "\nBasic Feasible Solution:\n";
         for (int i = 0; i < cols - rows; i++) { // Only iterate over the original variables
             float value = 0;
             for (int j = 0; j < rows; j++) {
@@ -181,7 +238,10 @@ public:
         for (int i = 0; i < rows; i++) {
             optimalValue += C[basicVars[i]] * B[i];
         }
-        cout << "Optimal Objective Value: " << optimalValue << "\n";
+        if (optimality)
+            cout << "\nOptimal Objective Value: " << optimalValue << "\n\n";
+        else    
+            cout << "\nObjective Value: " << optimalValue << "\n\n";
     }
 };
 
@@ -224,7 +284,7 @@ int main() {
     // Input unrestricted variables
     vector<int> unrestrictedVars;
     cout << "Enter the number of unrestricted variables: ";
-    int numUnrestricted;
+    int numUnrestricted{0};
     cin >> numUnrestricted;
     cout << "Enter the indices of unrestricted variables (1-based): ";
     for (int i = 0; i < numUnrestricted; i++) {
