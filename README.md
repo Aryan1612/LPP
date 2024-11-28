@@ -1,10 +1,11 @@
 # Simplex Method Solvers
 
-This repository contains implementations of various simplex method algorithms for solving linear programming problems. The following algorithms are included:
+This repository contains implementations of various simplex method algorithms for solving linear programming problems as well as integer programming problems. The following algorithms are included:
 
 - **Dual Simplex Method**
 - **Two-Phase Simplex Method**
 - **Big M Simplex Method**
+- **Gomory's Cutting Plane Method**
 
 ## Overview
 
@@ -22,6 +23,9 @@ Linear programming is a mathematical method for determining a way to achieve the
 
 3. **Big M Simplex Method**
    - This method handles artificial variables in the simplex method by adding a large penalty (Big M) to the objective function. This ensures that the artificial variables are driven out of the solution as the algorithm progresses.
+
+4. **Gomory's Cutting Plane Method**
+  - This method is used to solve integer programming problem by first applying the usual simplex algorithms (Simplex and BigM method) and then using gomory's cutting plane method and dual simplex to get an integer solution.
 
 ## Getting Started
 
